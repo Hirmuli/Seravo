@@ -33,15 +33,27 @@
   echo "<h1>The Basic Plugin Adminarea</h1>
   echo "<p>Here is all the plugin GUI goodness</p>;
   
-  /*
-  if(user_is_logged_in())
-  {
-       // collect data and set action
-        $data = array();
-        $data['action'] = 'wp_plugin_login_user';
-  }
-  */
-  
- }
+  //Function saves information
+function save_information() { //hook 
+    $data = array(); //Create array where information is saved
+	$data['username'] = 'wp_plugin_login_user'; //add username to array
+	$data['time'] = time(); //add time to array
+	if ( wp_login == true) // check if login is success or fail
+	{
+	$data['success'] = 'success'; //if login success add "success" to array
+	}
+	else ($data['success'] = 'failure'; //if login fails add "failure" to array
+}
+add_action('wp_login', 'save_information'); //hook action
+
+//create file and save data to file (needs updating)
+ function saveToTxt() {
+ $my_file = 'session';
+ $handle = fopen($my_file, 'w') or die('Cannot open file: '$my_file);
+ $data = array();
+ fwrite($handle, $array);
+ fclose($handle);
+	}
+ 
  
 ?>
