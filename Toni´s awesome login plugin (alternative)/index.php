@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Toni´s awesome login saver
+ * Plugin Name: ToniÂ´s awesome login saver (alternative)
  * Version: 1.0
  * Description: Saves user name, time of login and success/fail of long2ip
  * Author: Toni Manninen
@@ -20,6 +20,17 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+ // Include and configure log4php
+include('../apache-log4php-2.3.0\src\main\php/Logger.php'); //inset the path where you unpacked log4php
+
+Logger::configure('config.xml'); // Tell log4php to configuration file
+
+//Fetch a logger, it will inherit settins from the root logger
+$log = Logger::getLogger('myLogger');
+
+
+//Creates file and saves attempted username, time of attempt and if the login was success or fail.
+$log->info($data['username'] + $data['time'] + $data['success']);
 
  function basicPluginMenu() {
 	$appName = 'Login saver';
@@ -29,16 +40,12 @@
  
  function pluginAdminScreen()
  {
- // Will be changed to fit the plugin functionality later...
+  // Will be changed to fit the plugin functionality later...
   echo "<h1>The Basic Plugin Adminarea</h1>
   echo "<p>Here is all the plugin GUI goodness</p>;
-  
-  add_filter('wp_authenticate_user', 'myplugin_auth_login',10,2);
-  function myplugin_auth_login ($user,$username)
-  {
-  return $user;
-  }
-  
+ 
+ 
+
   //Function saves information
 function save_information() { //hook 
     $data = array(); //Create array where information is saved
@@ -48,18 +55,13 @@ function save_information() { //hook
 	{
 	$data['success'] = 'success'; //if login success add "success" to array
 	}
-	else { ($data['success'] = 'failure';  }//if login fails add "failure" to array
-}
-add_action('wp_login', 'save_information'); //hook action
-
-//create file and save data to file (needs updating)
- function saveToTxt() {
- $my_file = 'session';
- $handle = fopen($my_file, 'w') or die('Cannot open file: '$my_file);
- $data = array();
- fwrite($handle, $array);
- fclose($handle);
+	else {($data['success'] = 'failure'; }//if login fails add "failure" to array
 	}
- 
- 
+}
+
+add_action('wp_login', 'save_information'); //hook
+
+
+
+
 ?>
