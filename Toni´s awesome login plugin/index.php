@@ -1,10 +1,9 @@
 <?php
 /**
- * Plugin Name: Toni´s awesome login logger
+ * Plugin Name:Login logger
  * Version: 1.0
- * Description: Saves username, time of login and success/fail of login attempt
+ * Description: Saves username, time of login and success/failure of login attempt
  * Author: Toni Manninen
- * Author URI: http://www.seravo.fi
  * Plugin URI: http://www.seravo.fi
  * Licence:
     This program is free software; you can redistribute it and/or modify
@@ -24,17 +23,18 @@ add_action ('wp_authenticate' , 'check_custom_authentication');    Foundation, I
  defined('ABSPATH') or die("No script kiddies please!"); //Blocks direct access to plugins PHP files.
  
   date_default_timezone_set('UTC'); //set the default timezone to use. Available PHP 5.1
-
-  //runs the plugin when user tries to login
-  add_action ('wp_authenticate', 'get_login_information')
+  $data = array(username,time,login); // create array
   
-function get_login_information() //syntax error ??? why ??? need to solve this...
-{
-	//Create array where information is saved
-	$data = array(username,time,login);
-	//save attempted user name to array
-	$user = get_user_by('login', $username);
-	data['username'] = $user;
+  
+  //runs the plugin when user tries to login
+  add_action ('wp_authenticate', 'get_login_information');
+  
+
+function get_login_information( )
+	{
+	//save attempted username to variable
+	$user = get_user_by('login', string username);
+	data['username'] = $user; //ad variable to data array.
 	
 	data['time'] = date("d/m/Y")+ " " + date("h:i:sa");
 	
@@ -51,10 +51,10 @@ function get_login_information() //syntax error ??? why ??? need to solve this..
 	save_to_log(); // run save function to save this information to log file
 }
 
+
 //save information to login.log file
 function save_to_log()
 {
-
 	$logfile = fopen("login.log", "w") or die("Unable to open file"); // create and open file
 	fwrite($logfile, $data['username'] + "," + $data['time'] + "," + $data['login'] + "\n");
 	fclose($logfile); //close file
