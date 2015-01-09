@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Toni´s awesome login saver
+ * Plugin Name: Toni´s awesome login logger
  * Version: 1.0
  * Description: Saves username, time of login and success/fail of login attempt
  * Author: Toni Manninen
@@ -21,14 +21,17 @@
 add_action ('wp_authenticate' , 'check_custom_authentication');    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
+ defined('ABSPATH') or die("No script kiddies please!"); //Blocks direct access to plugins PHP files.
+ 
   date_default_timezone_set('UTC'); //set the default timezone to use. Available PHP 5.1
-  $data = array(); //Create array where information is saved
 
   //runs the plugin when user tries to login
   add_action ('wp_authenticate', 'get_login_information')
   
-function get_login_information()
+function get_login_information() //syntax error ??? why ??? need to solve this...
 {
+	//Create array where information is saved
+	$data = array(username,time,login);
 	//save attempted user name to array
 	$user = get_user_by('login', $username);
 	data['username'] = $user;
@@ -51,9 +54,10 @@ function get_login_information()
 //save information to login.log file
 function save_to_log()
 {
-	$logfile = fopen("login.log", "w") or die("Unable to open file"); //open file
-		fwrite($logfile, $data['username'] + "," + $data['time'] + "," + $data['login'] + "\n");
-	fclose($logfile);
+
+	$logfile = fopen("login.log", "w") or die("Unable to open file"); // create and open file
+	fwrite($logfile, $data['username'] + "," + $data['time'] + "," + $data['login'] + "\n");
+	fclose($logfile); //close file
 }
 
 ?>
