@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:Login logger
+ * Plugin Name:Login logger2015
  * Version: 1.0
  * Description: Saves username, time of login and success/failure of login attempt
  * Author: Toni Manninen
@@ -17,7 +17,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-add_action ('wp_authenticate' , 'check_custom_authentication');    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
  defined('ABSPATH') or die("No script kiddies please!"); //Blocks direct access to plugins PHP files.
