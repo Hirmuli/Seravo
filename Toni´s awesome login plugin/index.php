@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Toni´s awesome login saver
  * Version: 1.0
- * Description: Saves user name, time of login and success/fail of long2ip
+ * Description: Saves username, time of login and success/fail of login attempt
  * Author: Toni Manninen
  * Author URI: http://www.seravo.fi
  * Plugin URI: http://www.seravo.fi
@@ -18,48 +18,42 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+add_action ('wp_authenticate' , 'check_custom_authentication');    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
- function basicPluginMenu() {
-	$appName = 'Login saver';
-	$appID = 'login-saver';
-	add_menu_page ($appName, $appName, 'administrator',$appID,'-top-level', 'pluginAdminScreen');
- }
  
- function pluginAdminScreen()
- {
- // Will be changed to fit the plugin functionality later...
-  echo "<h1>The Basic Plugin Adminarea</h1>
-  echo "<p>Here is all the plugin GUI goodness</p>;
+  date_default_timezone_set('UTC'); //set the default timezone to use. Available PHP 5.1
+  $data = array(); //Create array where information is saved
+
+  //runs the plugin when user tries to login
+  add_action ('wp_authenticate', 'get_login_information')
   
-  add_filter('wp_authenticate_user', 'myplugin_auth_login',10,2);
-  function myplugin_auth_login ($user,$username)
-  {
-  return $user;
-  }
-  
-  //Function saves information
-function save_information() { //hook 
-    $data = array(); //Create array where information is saved
-	$data['username'] = $user; //add username to array
-	$data['time'] = time(); //add time to array
-	if ( is_user_logged_in() ) // check if login is success or fail
-	{
-	$data['success'] = 'success'; //if login success add "success" to array
+function get_login_information()
+{
+	//save attempted user name to array
+	$user = get_user_by('login', $username);
+	data['username'] = $user;
+	
+	data['time'] = date("d/m/Y")+ " " + date("h:i:sa");
+	
+	// check if "login was successful or failed
+ 	if ( 0 == $current_user -> ID ) {
+	//Action on failed login
+	add_action ( 'wp_login_failed', data['login']($this, 'login_failed') );
+		}
+	else {
+	//Action on successful login
+	add_action( 'wp_login', data['login']($this, 'login_success') );
 	}
-	else { ($data['success'] = 'failure';  }//if login fails add "failure" to array
+	
+	save_to_log(); // run save function to save this information to log file
 }
-add_action('wp_login', 'save_information'); //hook action
 
-//create file and save data to file (needs updating)
- function saveToTxt() {
- $my_file = 'session';
- $handle = fopen($my_file, 'w') or die('Cannot open file: '$my_file);
- $data = array();
- fwrite($handle, $array);
- fclose($handle);
-	}
- 
- 
+//save information to login.log file
+function save_to_log()
+{
+	$logfile = fopen("login.log", "w") or die("Unable to open file"); //open file
+		fwrite($logfile, $data['username'] + "," + $data['time'] + "," + $data['login'] + "\n");
+	fclose($logfile);
+}
+
 ?>
