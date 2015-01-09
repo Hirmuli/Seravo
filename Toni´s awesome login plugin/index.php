@@ -23,7 +23,7 @@ add_action ('wp_authenticate' , 'check_custom_authentication');    Foundation, I
  defined('ABSPATH') or die("No script kiddies please!"); //Blocks direct access to plugins PHP files.
  
   date_default_timezone_set('UTC'); //set the default timezone to use. Available PHP 5.1
-  $data = array(username,time,login); // create array
+  //$data = array(username,time,login); // create array
   
   
   //runs the plugin when user tries to login
@@ -33,19 +33,18 @@ add_action ('wp_authenticate' , 'check_custom_authentication');    Foundation, I
 function get_login_information( )
 	{
 	//save attempted username to variable
-	$user = get_user_by('login', string username);
-	data['username'] = $user; //ad variable to data array.
-	
-	data['time'] = date("d/m/Y")+ " " + date("h:i:sa");
+	$user = get_user_by('login', $username);
+
+	$date_time = date("d/m/Y")+ " " + date("h:i:sa");
 	
 	// check if "login was successful or failed
  	if ( 0 == $current_user -> ID ) {
 	//Action on failed login
-	add_action ( 'wp_login_failed', data['login']($this, 'login_failed') );
+	add_action ( 'wp_login_failed', $login($this, 'login_failed') );
 		}
 	else {
 	//Action on successful login
-	add_action( 'wp_login', data['login']($this, 'login_success') );
+	add_action( 'wp_login', $login($this, 'login_success') );
 	}
 	
 	save_to_log(); // run save function to save this information to log file
@@ -56,7 +55,7 @@ function get_login_information( )
 function save_to_log()
 {
 	$logfile = fopen("login.log", "w") or die("Unable to open file"); // create and open file
-	fwrite($logfile, $data['username'] + "," + $data['time'] + "," + $data['login'] + "\n");
+	fwrite($logfile, $user + "," + date_time + "," + $login + "\n");
 	fclose($logfile); //close file
 }
 
