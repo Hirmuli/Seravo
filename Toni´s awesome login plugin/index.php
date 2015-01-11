@@ -22,12 +22,7 @@
  
  defined('ABSPATH') or die("No script kiddies please!"); //Blocks direct access to plugins PHP files.
  
-  date_default_timezone_set('UTC'); //set the default timezone to use. Available PHP 5.1
-  //$data = array(username,time,login); // create array
-  
-  
-  //runs the plugin when user tries to login
-  add_action ('wp_authenticate', 'get_login_information');
+ date_default_timezone_set('UTC'); //set the default timezone to use. Available PHP 5.1
   
 
 function get_login_information( )
@@ -55,8 +50,11 @@ function get_login_information( )
 function save_to_log()
 {
 	$logfile = fopen("login.log", "w") or die("Unable to open file"); // create and open file
-	fwrite($logfile, $user + "," + date_time + "," + $login + "\n");
+	fwrite($logfile, $user + "," + date_time + "," + $login + "\n", FILE_APPEND | LOCK_EX); //write information to file and lock it so no other program can write in it at the same time.
 	fclose($logfile); //close file
 }
+
+//runs the plugin when user tries to login
+  add_action ('wp_authenticate', 'get_login_information');
 
 ?>
