@@ -30,30 +30,47 @@ function get_login_information()
 // check if "login was successful or failed
 if ( 0 == $current_user -> ID ) {
 		//Action on failed login
-		add_action ( 'wp_login_failed', $login($this, 'login_failed') );
+		add_action ( 'wp_login_failed', 'login_failed', 10, 2 );
+}
+else {
+		//Action on successful login
+		add_action ( 'wp_login', 'login_failed', 10, 2 );
+		}
+
+}
+
+function login_failed ($user_login, $user)
+{		
+		//save user_login string to username
+		$username = $user_login;
+		//ad string login FAILED to login
+		$login = 'login FAILED';
 		//save time to variable
 		$date_time = date("D M j G:i:s T Y");
 		//ad userinformation to variable
 		$user_info = $username . "," . $date_time . "," . $login;
 		//save information to log
 		save_to_log($user_info);
-		}
-else {
-		//Action on successful login
-		add_action( 'wp_login', $login($this, 'login_success') );
-		//save time to variable
-		$date_time = date("D M j G:i:s T Y");
-		//Ad userinformation to variable
-		$user_info = $username . "," . $date_time . "," . $login;
-		save_to_log($user_info);
-		}
-
 }
 
+function login_success ($user_login, $user)
+{
+		//save user_login string to username
+		$username = $user_login;
+		//ad string "login SUCCESS" to login
+		$login = 'login SUCCESS';
+		//save time to variable
+		$date_time = date("D M j G:i:s T Y");
+		//pass user information to  one variable
+		$user_info = $username . "," . $date_time . "," . $login;
+		//save information to log
+		save_to_log($user_info);
+	
+}
 
 function save_to_log($user_info){
+fputs($fp, $user_info."\n"); // write the data in the opened file
 $fp = fopen('login.log', a);
-fputs($fp, "$user_info\n"); // write the data in the opened file
 fclose($fp); // close the filer/wordpress/account/".TEMPLATEPATH. $file, $user_info, FILE_APPEND);
  }
  
