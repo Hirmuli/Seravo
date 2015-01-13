@@ -34,7 +34,7 @@ if ( 0 == $current_user -> ID ) {
 		//save time to variable
 		$date_time = date("d/m/Y") . " " . date("h:i:sa");
 		//ad userinformation to variable
-		$user_info = $username . "," + $date_time . "," . $login;
+		$user_info = $username . "," . $date_time . "," . $login;
 		//save information to log
 		save_to_log($user_info);
 		}
