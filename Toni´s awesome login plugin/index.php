@@ -21,6 +21,9 @@ defined('ABSPATH') or die("No script kiddies please!"); //Blocks direct access t
 
 date_default_timezone_set('UTC'); //set the default timezone to use. Available PHP 5.1
 
+ 
+//runs the plugin when user tries to login
+add_action ('wp_signon', 'get_login_information');
 
 function get_login_information()
 {
@@ -47,14 +50,11 @@ else {
 
 }
 
-//save information to login.log file
-function save_to_log($user_info)
-	{
-		$logfile = fopen("login.log", "w") or die("Unable to open file"); // create and open file
-		fwrite($logfile + "\n"); //write information to file
-		fclose($logfile); //close file
-	}
-//runs the plugin when user tries to login
-add_action ('wp_signon', 'get_login_information');
+
+ function save_to_log($user_info){
+$pointer = fopen('login.log', a);
+fputs($fp, "$user_info\n"); // write the data in the opened file
+fclose($fp); // close the filer/wordpress/account/".TEMPLATEPATH. $file, $user_info, FILE_APPEND);
+ }
 
 ?>
