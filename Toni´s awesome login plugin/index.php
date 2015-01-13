@@ -32,7 +32,7 @@ if ( 0 == $current_user -> ID ) {
 		//Action on failed login
 		add_action ( 'wp_login_failed', $login($this, 'login_failed') );
 		//save time to variable
-		$date_time = date("d/m/Y") . " " . date("h:i:sa");
+		$date_time = date("D M j G:i:s T Y");
 		//ad userinformation to variable
 		$user_info = $username . "," . $date_time . "," . $login;
 		//save information to log
@@ -42,9 +42,9 @@ else {
 		//Action on successful login
 		add_action( 'wp_login', $login($this, 'login_success') );
 		//save time to variable
-		$date_time = date("d/m/Y") . " " . date("h:i:sa");
+		$date_time = date("D M j G:i:s T Y");
 		//Ad userinformation to variable
-		$user_info = $username . "," + $date_time . "," . $login;
+		$user_info = $username . "," . $date_time . "," . $login;
 		save_to_log($user_info);
 		}
 
